@@ -512,6 +512,11 @@ void CompilerHLSL::emit_builtin_outputs_in_struct()
 			semantic = legacy ? "POSITION" : "SV_Position";
 			break;
 
+		case BuiltInLayer:
+			type = "uint";
+			semantic = "SV_RenderTargetArrayIndex";
+			break;
+
 		case BuiltInFragDepth:
 			type = "float";
 			if (legacy)
@@ -608,6 +613,13 @@ void CompilerHLSL::emit_builtin_inputs_in_struct()
 				SPIRV_CROSS_THROW("Instance index not supported in SM 3.0 or lower.");
 			type = "uint";
 			semantic = "SV_InstanceID";
+			break;
+
+		case BuiltInLayer:
+			if (legacy)
+				SPIRV_CROSS_THROW("Layer index not supported in SM 3.0 or lower.");
+			type = "uint";
+			semantic = "SV_RenderTargetArrayIndex";
 			break;
 
 		case BuiltInSampleId:
@@ -950,6 +962,10 @@ void CompilerHLSL::emit_builtin_variables()
 
 		case BuiltInInstanceId:
 		case BuiltInSampleId:
+			type = "int";
+			break;
+
+		case BuiltInLayer:
 			type = "int";
 			break;
 
